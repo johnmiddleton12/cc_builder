@@ -99,7 +99,7 @@ def path_to_instructions(path, layer, items, slot):
     for i in range(len(path) - 1):
 
         # if there is a (-1, 0) in the path, it means the turtle has to refuel
-        if i != 0 and path[i] == (-1, 0):
+        if i != 0 and path[i] == (-1, 0) and path[i - 1] != (-1, 0):
             instructions.extend(generate_refuel_instructions(direction, layer))
             direction = 1
 
@@ -114,7 +114,7 @@ def path_to_instructions(path, layer, items, slot):
 
         #TODO: gross case - this might not be necessary, as the code to generate instructions and place a block is run for
         # duplicate coordinates, but it might be more efficient to just check for duplicates and not run the code
-        if path[i] == path[i + 1]:
+        if path[i] == path[i + 1] and (path[i + 1] != (-1, 0)):
             instructions.append("placeDown()")
             items -= 1
         else:

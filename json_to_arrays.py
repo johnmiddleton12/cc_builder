@@ -37,9 +37,9 @@ class BlockArray:
         for z in range(self.size_z):
             for x in range(self.size_x):
                 if x == 0:
-                    row = self.get_block(y, x, z).get_image()
+                    row = self.get_block(x, y, z).get_image()
                 else:
-                    row = get_concat_h(row, self.get_block(y, x, z).get_image())
+                    row = get_concat_h(row, self.get_block(x, y, z).get_image())
             if z == 0:
                 layer = row
             else:

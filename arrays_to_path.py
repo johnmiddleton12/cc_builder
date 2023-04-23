@@ -1,6 +1,10 @@
 from collections import deque
 
 def find_next_block(matrix, current_pos):
+
+    if current_pos == (-1, 0):
+        current_pos = (0, 0)
+
     visited = set()
     queue = deque([current_pos])
     
@@ -24,7 +28,9 @@ def distance(a, b):
 #TODO: fix this
 def array_to_path(matrix, max_fuel, starting_pos):
 
-    print("Finding path...")
+    # print("Finding path...")
+    # print("Starting position: {}".format(starting_pos))
+    # print("Matrix: {}".format(matrix))
     matrix = [list(row) for row in matrix]
     # current_pos = (0, 0)
     current_pos = starting_pos
@@ -39,6 +45,8 @@ def array_to_path(matrix, max_fuel, starting_pos):
         dist_to_block = distance(current_pos, next_block)
         dist_to_start = distance(next_block, (-1, 0))
 
+        # print("Next block: {}".format(next_block))
+
         if dist_to_block + dist_to_start > remaining_fuel:
             path.append((-1, 0))
             remaining_fuel = max_fuel
@@ -49,6 +57,7 @@ def array_to_path(matrix, max_fuel, starting_pos):
         matrix[next_block[1]][next_block[0]] = 0
 
     # path.append((0, 0))
+    # print("Path: {}".format(path))
     return path, current_pos
 
 if __name__ == "__main__":
