@@ -52,7 +52,7 @@ file.close()
 ### Notes / To-do
 
 - Fuel is essentially infinite in practice, however fuel algo needs testing when paired with event of running out of blocks - currently, fuel routes are only calculated per layer, which is incorrect, the fuel needs to be updated after a layer traversal, can be accomplished by keeping track of used fuel in path generation 
-- Add 3D optimization - right now, shortest path is only computed by layer - complications include turtle getting trapped if shortest path takes it up and around, for example
-- Add multi-block functionality - likely trivial, but annoying and might introduce certain complications - i.e., go and place all blocks of certain type then come back, or place all different blocks in a layer, etc.
+- Add **3D optimization** - right now, shortest path is only computed by layer - complications include turtle getting trapped if shortest path takes it up and around, for example
+- Add **multi-block functionality** - likely trivial, but annoying and might introduce certain complications - i.e., go and place all blocks of certain type then come back, or place all different blocks in a layer, etc.
 - Along with multi-block functionality, could add block state functionality, i.e., stair direction or door open/closed, etc.
 - Potentially limited in size by the `computer_space_limit` in ComputerCraft, which is 1,000,000 bytes. A 81x87x87 structure resulted in a Lua file of 864,340 bytes, which is close to the cap. However, this value can be modified. This file resulted in ~80,000 instructions, which again shows the lack of a fuel limit in practice with an advanced turtle having a fuel limit of 100,000. Of course, thie value could be changed in the config to make refueling not a problem
