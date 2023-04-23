@@ -20,10 +20,14 @@ def find_next_block(matrix, current_pos):
 def distance(a, b):
     return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
-def turtle_path(matrix, max_fuel):
+# currently, doesn't worry about fuel between layers
+#TODO: fix this
+def array_to_path(matrix, max_fuel, starting_pos):
+
     print("Finding path...")
     matrix = [list(row) for row in matrix]
-    current_pos = (0, 0)
+    # current_pos = (0, 0)
+    current_pos = starting_pos
     path = [current_pos]
     remaining_fuel = max_fuel
 
@@ -33,10 +37,10 @@ def turtle_path(matrix, max_fuel):
             break
         
         dist_to_block = distance(current_pos, next_block)
-        dist_to_start = distance(next_block, (0, 0))
+        dist_to_start = distance(next_block, (-1, 0))
 
         if dist_to_block + dist_to_start > remaining_fuel:
-            path.append((0, 0))
+            path.append((-1, 0))
             remaining_fuel = max_fuel
         
         path.append(next_block)
@@ -44,8 +48,8 @@ def turtle_path(matrix, max_fuel):
         current_pos = next_block
         matrix[next_block[1]][next_block[0]] = 0
 
-    path.append((0, 0))
-    return path
+    # path.append((0, 0))
+    return path, current_pos
 
 if __name__ == "__main__":
     layer0 = [(1,1,1,1,1), (1,1,1,1,1), (1,1,1,1,1), (1,1,1,1,1), (1,1,1,1,1)]
@@ -55,9 +59,11 @@ if __name__ == "__main__":
     # matrix = [(0, 0, 1), (1, 1, 1), (1, 0, 0)]
     # max_fuel = 11
 
-    path0 = turtle_path(layer0, max_fuel)
-    path1 = turtle_path(layer1, max_fuel)
-    path2 = turtle_path(layer2, max_fuel)
+    start_pos = (-1, 0)
+
+    path0, start_pos = array_to_path(layer0, max_fuel, start_pos)
+    path1, start_pos = array_to_path(layer1, max_fuel, start_pos)
+    path2, start_pos = array_to_path(layer2, max_fuel, start_pos)
 
     print(path0)
     print(path1)

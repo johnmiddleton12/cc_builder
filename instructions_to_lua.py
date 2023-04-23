@@ -11,7 +11,7 @@ def instructions_to_lua(instructions, fileName):
     # setup
 
     # 1. refuel
-    fileContents += "refuel()\n"
+    fileContents += "maxRefuel()\n"
     # 2. turn around
     fileContents += "turnRight()\n"
     fileContents += "turnRight()\n"
@@ -21,7 +21,7 @@ def instructions_to_lua(instructions, fileName):
     fileContents += "turnLeft()\n"
     fileContents += "up()\n" * 2
     # 5. move forward
-    fileContents += "forward()\n"
+    # fileContents += "forward()\n"
 
     # for loop
     for instruction in instructions:

@@ -1,4 +1,17 @@
+function maxRefuel()
+    while refuel() do
+    end
+
+    for i = 1, 16 do
+        turtle.select(i)
+        turtle.drop()
+    end
+
+end
+
 function refuel()
+
+    if turtle.getFuelLevel() == 100000 then return false end
 
     turtle.select(1)
     turtle.suck()
@@ -14,16 +27,19 @@ function refuel()
     printError(err)
     end
 
-    turtle.select(2)
+    return ok
 
 end
 
 function collectItems()
-    turtle.select(2)
-    -- Collect items from the chest until turtle is full or chest is empty
-    while turtle.suck() do
-        -- Do nothing
+
+    for i = 1, 16 do
+        turtle.select(i)
+        turtle.suck()
     end
+
+    turtle.select(1)
+
 end
 
 -- Safe movement functions

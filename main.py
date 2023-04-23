@@ -8,10 +8,11 @@ import instructions_to_lua
 
 if __name__ == "__main__":
 
-    jsonFileName = "data/buildVanilla.json"
+    fileName = "data/asianBuilding.nbt"
+    jsonFileName = fileName.replace(".nbt", ".json")
 
     # Convert the NBT file to a JSON file
-    nbt_to_json.nbt_to_json("data/buildVanilla.nbt", jsonFileName)
+    # nbt_to_json.nbt_to_json(fileName, jsonFileName)
 
     # Convert the JSON file to a 3D array of blocks
     blocks = json_to_arrays.json_to_arrays(jsonFileName)
@@ -21,12 +22,23 @@ if __name__ == "__main__":
     # blocks.pretty_print_layer(1)
 
     # Find the paths for the turtle
-    max_fuel = 100000
+    max_fuel = 10000
     paths = []
-    for layer in matrix:   
-        path = arrays_to_path.turtle_path(layer, max_fuel)
-        paths.append(path)
+    starting_pos = (-1, 0)
 
+    min_layer = 50 
+    max_layer = 87 
+    current_layer = 0
+
+    for layer in matrix:   
+
+        current_layer += 1
+
+        if current_layer > min_layer and current_layer < max_layer:
+            # path = arrays_to_path.turtle_path(layer, max_fuel)
+            path, starting_pos = arrays_to_path.array_to_path(layer, max_fuel, starting_pos)
+            paths.append(path)
+        
     # Convert the paths to instructions for the turtle
     instructions = paths_to_instructions.paths_to_instructions(paths)
 

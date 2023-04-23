@@ -40,7 +40,7 @@ def generate_direction_instruction(direction, correct_direction):
 
     return instructions
 
-def generate_instructions(a, b, direction):
+def generate_instructions(a, b, direction, items=-1):
     # a and b are tuples representing coordinates
     # e.g. (0, 0) and (1, 1)
 
@@ -78,47 +78,77 @@ def generate_instructions(a, b, direction):
     for i in range(abs(a[1] - b[1])):
         instructions.append("forward()")
 
-    if b != (0, 0):
+    if b != (-1, 0):
         instructions.append("placeDown()")
+        if items != -1:
+            items -= 1
 
-    return instructions, direction
+    if items == -1:
+        return instructions, direction
+    else:
+        return instructions, direction, items
 
-def path_to_instructions(path, layer):
+def path_to_instructions(path, layer, items, slot):
 
     # path is a list of tuples, each tuple is a coordinate
     # e.g. [(0,0), (1,0), (2,0), (2,1), (2,2), (1,2), (0,2), (0,1), (0,0)]
-
-    # The turtle will start at (0,0) and face east, which is the positive x direction
-
-    # directions:
-    # 0 = north
-    # 1 = east
-    # 2 = south
-    # 3 = west
-
-    # This program generates the instructions to get the turtle from (0,0) to (0,0) again
-
-    # if the turtle ever comes back to (0,0) it will refuel
 
     instructions = []
     direction = 1
 
     for i in range(len(path) - 1):
 
-        # if there is a (0, 0) in the path, it means the turtle has to refuel
-        if i != 0 and path[i] == (0, 0):
-            # but if this is a (0, 0) block, place down
-            if path[i - 1] == (0, 0):
-                instructions.append("placeDown()")
-            else:
-                instructions.extend(generate_refuel_instructions(direction, layer))
-                direction = 1
+        # if there is a (-1, 0) in the path, it means the turtle has to refuel
+        if i != 0 and path[i] == (-1, 0):
+            instructions.extend(generate_refuel_instructions(direction, layer))
+            direction = 1
 
-        new_instructions, direction = generate_instructions(path[i], path[i + 1], direction)
-        instructions.extend(new_instructions)
+        if items == 0:
+            if slot == 16:
+                instructions.extend(generate_item_collection_instructions(path[i], direction, layer))
+                slot = 1
+            else:
+                instructions.append("turtle.select(" + str(slot + 1) + ")")
+                slot += 1
+            items = 64
+
+        #TODO: gross case
+        if path[i] == path[i + 1]:
+            instructions.append("placeDown()")
+            items -= 1
+        else:
+            new_instructions, direction, items = generate_instructions(path[i], path[i + 1], direction, items)
+            instructions.extend(new_instructions)
 
     # make sure the turtle ends up facing east
+    # instructions.append("start of correcting to east")
     instructions.extend(generate_direction_instruction(direction, 1))
+    # instructions.append("end of correcting to east")
+
+    return instructions, items, slot
+
+def generate_item_collection_instructions(current_pos, current_direction, layer):
+    instructions = []
+
+    # go to (-1, 0)
+    go_back, direction = generate_instructions(current_pos, (-1, 0), current_direction)
+    instructions.extend(go_back)
+    # face east at (-1, 0)
+    instructions.extend(generate_direction_instruction(direction, 1))
+
+    for i in range(layer + 2):
+        instructions.append("down()")
+
+    instructions.append("turnRight()")
+    instructions.append("collectItems()")
+    instructions.append("turnLeft()")
+
+    for i in range(layer + 2):
+        instructions.append("up()")
+
+    go_back, direction = generate_instructions((-1, 0), current_pos, 1)
+    instructions.extend(go_back)
+    instructions.extend(generate_direction_instruction(direction, current_direction))
 
     return instructions
 
@@ -126,7 +156,9 @@ def generate_refuel_instructions(direction, layer, gainLayer=False):
     instructions = []
 
     instructions.extend(generate_direction_instruction(direction, 1))
-    instructions.append("back()")
+
+    # accounted for this by setting refuel location to be (-1, 0)
+    # instructions.append("back()")
 
     for i in range(layer + 2):
         instructions.append("down()")
@@ -141,7 +173,7 @@ def generate_refuel_instructions(direction, layer, gainLayer=False):
     for i in range(layer + 2):
         instructions.append("up()")
 
-    instructions.append("forward()")
+    # instructions.append("forward()")
 
     return instructions
 
@@ -156,22 +188,38 @@ def paths_to_instructions(paths):
 
     instructions = []
 
+    itemCount = 64
+    slot = 1
+
     for i in range(len(paths)):
-        instructions.extend(path_to_instructions(paths[i], i))
+
+        # print(paths[i])
+
+        new_instructions, itemCount, slot = path_to_instructions(paths[i], i, items=itemCount, slot=slot)
+
+        instructions.extend(new_instructions)
 
         if i != len(paths) - 1:
-            #TODO: Unnecessary refuel!
             # refuel every layer
             if refuelEveryLayer:
                 instructions.extend(generate_refuel_instructions(1, i, gainLayer=True))   
             else:
                 instructions.extend(advance_layer())
 
-    # go back to the starting position
-    instructions.append("back()")
+    # go to starting x, z
+    go_back, direction = generate_instructions(paths[-1][-1], (-1, 0), 1)
+    instructions.extend(go_back)
+    instructions.extend(generate_direction_instruction(direction, 0))
+
+    # go to starting y
     for i in range(len(paths) + 2):
         instructions.append("down()")
-    instructions.append("turnLeft()")
+
+
+    # process placeDown() instructions
+    # keep track of how many placeDown() instructions there are
+    # if there are more than 64, then add a collectItems() instruction
+    #TODO: implement
 
     return instructions
 
