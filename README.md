@@ -8,7 +8,7 @@ Generates a Lua script to build a structure given in a `.nbt` format using Compu
 
 This collection of scripts takes a `.nbt` file, converts it into a more useful `.json`, then parses that into a multi-dimensional array. It then performs a modified BFS on each layer to find the most efficient path for the turtle to take to build the structure, taking into account a fuel limit. This path is then converted into a series of instructions for the turtle to take, which is then written to a `.lua` file, the language used by ComputerCraft.
 
-![](video/output_optimized.gif)
+![](images/output_optimized.gif)
 
 ----
 
@@ -49,7 +49,7 @@ file.close()
 5. Run `python3 main.py`
 6. Run the previously created program in-game to download `build.lua` to the turtle.
 7. Set up the turtle as shown - arrow shows direction of turtle:
-![setup photo](data/layout.png)
+![setup photo](images/layout.png)
 8. Fill the coal chest with a bunch of coal / fuel, fill the wool chest with the item to build with
 9. Run `out` on the turtle, making sure space is clear - turtle will build to its right and up while facing the coal chest
 
