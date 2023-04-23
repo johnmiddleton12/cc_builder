@@ -2,6 +2,10 @@
 
 ----
 
+![](video/output_optimized.gif)
+
+----
+
 ### Description
 
 Generates a Lua script to build a structure given in a `.nbt` format using ComputerCraft turtles.
