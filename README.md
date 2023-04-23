@@ -48,3 +48,9 @@ file.close()
 ![setup photo](data/layout.png)
 8. Fill the coal chest with a bunch of coal / fuel, fill the wool chest with the item to build with
 9. Run `out` on the turtle, making sure space is clear - turtle will build to its right and up while facing the coal chest
+
+### Notes / To-do
+
+- Fuel is essentially infinite in practice, however fuel algo needs testing when paired with event of running out of blocks
+- Add 3D optimization - right now, shortest path is only computed by layer
+- Add multi-block functionality - likely trivial, but annoying and might introduce certain complications - i.e., go and place all blocks of certain type then come back, or place all different blocks in a layer, etc.
