@@ -18,22 +18,28 @@ class BlockArray:
         self.size_x = size_x
         self.size_y = size_y
         self.size_z = size_z
-        self.blocks = [[[Block("minecraft:air", 0) for z in range(size_z)] for y in range(size_y)] for x in range(size_x)]
+        self.blocks = [[[Block("minecraft:air", 0) for z in range(size_z)] for x in range(size_x)] for y in range(size_y)]
+        self.matrix = [[[0 for z in range(size_z)] for x in range(size_x)] for y in range(size_y)]
+    
+    def get_matrix(self):
+        return self.matrix
 
     def get_block(self, x, y, z):
-        return self.blocks[x][y][z]
+        return self.blocks[y][x][z]
     
     def set_block(self, x, y, z, block):
-        self.blocks[x][y][z] = block
+        self.blocks[y][x][z] = block
+        if block.block_type != "air":
+            self.matrix[y][x][z] = 1
 
     def pretty_print_layer(self, y):
         # concatenate all the images in the layer
         for z in range(self.size_z):
             for x in range(self.size_x):
                 if x == 0:
-                    row = self.get_block(x, y, z).get_image()
+                    row = self.get_block(y, x, z).get_image()
                 else:
-                    row = get_concat_h(row, self.get_block(x, y, z).get_image())
+                    row = get_concat_h(row, self.get_block(y, x, z).get_image())
             if z == 0:
                 layer = row
             else:

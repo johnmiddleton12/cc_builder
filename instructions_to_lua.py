@@ -29,6 +29,7 @@ def instructions_to_lua(instructions, fileName):
         fileContents += "\n"
 
     # write to file
+    print("Writing Lua code to file: " + fileName)
     with open(fileName, "w") as f:
         f.write(fileContents)
     

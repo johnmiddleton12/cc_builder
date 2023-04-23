@@ -150,6 +150,8 @@ def advance_layer():
 
 def paths_to_instructions(paths):
 
+    print("Generating instructions...")
+
     refuelEveryLayer = False
 
     instructions = []

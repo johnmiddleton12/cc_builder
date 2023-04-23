@@ -16,6 +16,14 @@ Converts the JSON of the build into typed nested arrays to be used algorithmical
 
 Generates an optimized path for the turtle to take using BFS that takes into account refueling
 
-### path_to_lua.py
+### path_to_instructions.py
 
-Writes a `.lua` file that contains the turtle instructions based on a given path
+Creates a series of instructions from a path around a 2D surface that instruct the turtle
+
+### instructions_to_lua.py
+
+Writes the instructions along with necessary helper functions to a `.lua` file
+
+### functions.lua
+
+Functions that are shared with each Lua program
