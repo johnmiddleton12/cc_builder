@@ -1,3 +1,5 @@
+import os
+
 import nbt_to_json
 import json_to_arrays
 import arrays_to_path
@@ -29,4 +31,8 @@ if __name__ == "__main__":
     instructions = paths_to_instructions.paths_to_instructions(paths)
 
     # Convert the instructions to a Lua file
-    instructions_to_lua.instructions_to_lua(instructions, "buildVanilla.lua")
+
+    # make out directory if it doesn't exist    
+    if not os.path.exists("out"):
+        os.makedirs("out")
+    instructions_to_lua.instructions_to_lua(instructions, "out/build.lua")

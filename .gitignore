@@ -1,3 +1,4 @@
 env/
 blockImages/
 __pycache__/
+out/
