@@ -112,7 +112,8 @@ def path_to_instructions(path, layer, items, slot):
                 slot += 1
             items = 64
 
-        #TODO: gross case
+        #TODO: gross case - this might not be necessary, as the code to generate instructions and place a block is run for
+        # duplicate coordinates, but it might be more efficient to just check for duplicates and not run the code
         if path[i] == path[i + 1]:
             instructions.append("placeDown()")
             items -= 1
