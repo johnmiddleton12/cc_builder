@@ -22,10 +22,11 @@ if __name__ == "__main__":
     # blocks.pretty_print_layer(1)
 
     # Find the paths for the turtle
-    max_fuel = 10000
+    max_fuel = 100000
     paths = []
     starting_pos = (-1, 0)
 
+    # min_layer = 0
     min_layer = 50 
     max_layer = 87 
     current_layer = 0
@@ -35,7 +36,6 @@ if __name__ == "__main__":
         current_layer += 1
 
         if current_layer > min_layer and current_layer < max_layer:
-            # path = arrays_to_path.turtle_path(layer, max_fuel)
             path, starting_pos = arrays_to_path.array_to_path(layer, max_fuel, starting_pos)
             paths.append(path)
         
