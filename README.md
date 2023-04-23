@@ -1,8 +1,12 @@
-ComputerCraft Turtle Constructor
+## ComputerCraft Turtle Constructor
 
 ----
 
+### Description
+
 Generates a Lua script to build a structure given in a `.nbt` format using ComputerCraft turtles.
+
+This collection of scripts takes a `.nbt` file, converts it into a more useful `.json`, then performs a modified BFS on each layer to find the most efficient path for the turtle to take to build the structure. This path is then converted into a series of instructions for the turtle to take, which is then written to a `.lua` file, the language used by ComputerCraft.
 
 ### Files
 
@@ -19,15 +23,15 @@ Generates a Lua script to build a structure given in a `.nbt` format using Compu
 * functions.lua
   * Functions that are shared with each Lua program
 
-### Workflow
+### Development Workflow
 
 1. Spin up a local http server to download the files in MC using CC's http request API
    * `python3 -m http.server 8000`
 2. Edit ComputerCraft config to allow localhost connections - comment out these lines in `.../minecraft/saves/SaveName/serverconfig/computercraft-server.toml`
 ```
- 	#[[http.rules]]
-	#	host = "$private"
-	#	action = "deny"
+[[http.rules]]
+	host = "$private"
+	action = "deny"
 ```
 3. Put the following code in a pastebin, or just plug it into a turtle. (Can then put it on a Floppy in-game)
 ```lua
@@ -37,7 +41,7 @@ local file = fs.open("out.lua", "w")
 file.write(text)
 file.close()
 ```
-4. Put the `.nbt` in the data folder and update the path in `main.py`
+4. Put the `.nbt` structure file in the data folder and update the path to it in `main.py`
 5. Run `python3 main.py`
 6. Run the previously created program in-game to download `build.lua` to the turtle.
 7. Set up the turtle as shown - arrow shows direction of turtle:
