@@ -1,10 +1,10 @@
 import os
 
-import nbt_to_json
-import json_to_arrays
-import arrays_to_path
-import paths_to_instructions
-import instructions_to_lua
+import lib.nbt_to_json as nbt_to_json
+import lib.json_to_arrays as json_to_arrays
+import lib.arrays_to_path as arrays_to_path
+import lib.paths_to_instructions as paths_to_instructions
+import lib.instructions_to_lua as instructions_to_lua
 
 if __name__ == "__main__":
 

@@ -1,4 +1,6 @@
 env/
 blockImages/
-__pycache__/
+*/__pycache__/
 out/
+*/.DS_Store
+video/
