@@ -8,7 +8,7 @@ import lib.instructions_to_lua as instructions_to_lua
 
 if __name__ == "__main__":
 
-    fileName = "data/initials.nbt"
+    fileName = "data/dome.nbt"
     jsonFileName = fileName.replace(".nbt", ".json")
 
     # Convert the NBT file to a JSON file
