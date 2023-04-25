@@ -54,14 +54,18 @@ class Block:
     def get_image(self):
         return Image.open("blockImages/" + "Images/" + self.block_type + ".png")
 
-### Description: This function converts a JSON file to a 3D array of blocks.
-### 
-### The JSON file will have been converted form a Minecraft NBT file using the nbt_to_json.py script.
-### That NBT file was created using the Litematica mod.
-### 
-### @param json_path: The path to the JSON file.
-### @return: A 3D array of blocks.
 def json_to_arrays(json_path): 
+    """This function converts a JSON file to a 3D array of blocks.
+
+    The JSON file will have been converted form a Minecraft NBT file using the nbt_to_json.py script.
+    That NBT file was created using the Litematica mod, converted from a schematic file on some kind.
+
+    Parameters:
+    json_path (str): The path to the JSON file.
+
+    Returns:
+    BlockArray: A 3D array of blocks.
+    """
 
     ### Step 0 - Load the JSON file
 
