@@ -24,15 +24,18 @@ def find_next_block(matrix, current_pos):
 def distance(a, b):
     return abs(a[0] - b[0]) + abs(a[1] - b[1])
 
-def array_to_path(matrix, fuel, starting_pos, layer):
+def array_to_path(matrix, fuel, max_fuel, starting_pos, layer):
     """Converts a 2D array of blocks to an array of positions for the turtle to move to
 
     If the turtle doesn't have enough fuel to make it to the next block, it will
     return to the position (-1, 0) to refuel. These positions are parsed separately
 
+    Assumes the turtle is at the layer to be traversed.
+
     Parameters:
     matrix (list): A 2D array of blocks
     fuel (int): The amount of fuel the turtle has
+    max_fuel (int): The amount of fuel the turtle has after refueling
     starting_pos (tuple): The starting position of the turtle
     layer (int): The layer the turtle is currently on, used to calculate fuel usage
         going down to fuel layer and back up
@@ -44,8 +47,6 @@ def array_to_path(matrix, fuel, starting_pos, layer):
     """
 
     print("Finding path...")
-    # print("Starting position: {}".format(starting_pos))
-    # print("Matrix: {}".format(matrix))
     matrix = [list(row) for row in matrix]
     current_pos = starting_pos
     path = [current_pos]
@@ -54,16 +55,28 @@ def array_to_path(matrix, fuel, starting_pos, layer):
     while True:
         next_block = find_next_block(matrix, current_pos)
         if next_block is None:
+            dist_to_start = distance(current_pos, (-1, 0))
+            dist_to_start_from_next_level = dist_to_start + layer + 2 + 1
+            print("dist_to_start_from_next_level:", dist_to_start_from_next_level)
+            print("remaining_fuel:", remaining_fuel)
+            if dist_to_start_from_next_level > remaining_fuel:
+                raise Exception("Not enough fuel to complete path, for next level")
             break
         
         dist_to_block = distance(current_pos, next_block)
         dist_to_start = distance(next_block, (-1, 0))
 
-        if dist_to_block + dist_to_start > remaining_fuel - (2 * (layer + 1)):
+        print("dist_to_block:", dist_to_block)
+        print("dist_to_start:", dist_to_start)
+        print("remaining_fuel:", remaining_fuel)
+        print("layer + 2:", layer + 2)
+        print("path:", path)
+
+        if dist_to_block + dist_to_start > remaining_fuel - (layer + 2):
             if current_pos == (-1, 0):
                 raise Exception("Not enough fuel to complete path")
             path.append((-1, 0))
-            remaining_fuel = fuel
+            remaining_fuel = max_fuel
             current_pos = (-1, 0)
             continue
         
@@ -73,7 +86,7 @@ def array_to_path(matrix, fuel, starting_pos, layer):
         current_pos = next_block
         matrix[next_block[1]][next_block[0]] = 0
 
-    return path, fuel, current_pos
+    return path, remaining_fuel, current_pos
 
 if __name__ == "__main__":
     layer0 = [(1,1,1,1,1), (1,1,1,1,1), (1,1,1,1,1), (1,1,1,1,1), (1,1,1,1,1)]

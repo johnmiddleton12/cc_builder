@@ -8,43 +8,38 @@ import lib.instructions_to_lua as instructions_to_lua
 
 if __name__ == "__main__":
 
-    fileName = "data/dome.nbt"
-    jsonFileName = fileName.replace(".nbt", ".json")
+    # fileName = "data/dome.nbt"
 
     # Convert the NBT file to a JSON file
-    nbt_to_json.nbt_to_json(fileName, jsonFileName)
+    # jsonFileName = fileName.replace(".nbt", ".json")
+    # nbt_to_json.nbt_to_json(fileName, jsonFileName)
 
     # Convert the JSON file to a 3D array of blocks
-    blocks = json_to_arrays.json_to_arrays(jsonFileName)
-    matrix = blocks.get_matrix()
+    # blocks = json_to_arrays.json_to_arrays(jsonFileName)
+    # matrix = blocks.get_matrix()
 
-    # Create an image
-    # blocks.pretty_print_layer(0)
+    # layer0 = [(0,0,0),(0,0,1),(0,0,0)]
+    layer0 = [(1,1,1,1,1), (1,1,1,1,1), (1,1,1,1,1), (1,1,1,1,1), (1,1,1,1,1)]
+    layer1 = [(0,0,0,0,0),(0,0,0,0,0),(0,0,0,0,0),(0,0,0,0,0),(0,0,0,0,1)]
+    # layer2 = [(0,0,0,0,0),(0,0,0,0,0),(0,0,1,0,0),(0,0,0,0,0),(0,0,0,0,0)]
+    # matrix = [layer0, layer1, layer2]
+    matrix = [layer0, layer1]
 
     # Find the paths for the turtle
-    max_fuel = 100000
-    paths = []
+    fuel = 19
+    maxFuel = 22
     starting_pos = (-1, 0)
 
-    # min_layer = 0
-    min_layer = 0
-    max_layer = blocks.size_y
-    current_layer = 0
-
-    for layer in matrix:   
-
-        current_layer += 1
-
-        if current_layer > min_layer and current_layer < max_layer:
-            path, starting_pos = arrays_to_path.array_to_path(layer, max_fuel, starting_pos)
-            paths.append(path)
+    paths = []
+    for i in range(len(matrix)):
+        path, fuel, starting_pos = arrays_to_path.array_to_path(matrix[i], fuel, maxFuel, starting_pos, i)
+        print(path)
+        paths.append(path)
         
     # Convert the paths to instructions for the turtle
     instructions = paths_to_instructions.paths_to_instructions(paths)
 
     # Convert the instructions to a Lua file
-
-    # make out directory if it doesn't exist    
     if not os.path.exists("out"):
         os.makedirs("out")
     instructions_to_lua.instructions_to_lua(instructions, "out/build.lua")
